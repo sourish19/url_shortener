@@ -3,6 +3,7 @@ import { requestedURL, redirectUrl, visitHistory } from '../controller/urlContro
 
 const router = Router();
 
+// router.route('/').get(renderHome);
 router.route('/:shortid').get(redirectUrl);
 router.route('/visithistory/:shortid').get(visitHistory);
 router.route('/').post(requestedURL);

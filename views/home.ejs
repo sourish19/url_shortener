@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+  </head>
+  <body>
+    <div>
+      <h2>URL Shortner</h2>
+      <% if(shorten_url) { %>
+        <p>URL Generated <%= shorten_url%></p>
+       
+      <% } %>
+      <form action="/api/url" method="POST">
+        <label for="requestedURL">Enter Your URL</label>
+        <input type="text" placeholder="https://example.com" name="requestedURL" />
+            <button type="submit">Submit</button>
+      </form>
+  
+    </div>
+  </body>
+</html>

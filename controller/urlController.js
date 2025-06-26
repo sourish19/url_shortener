@@ -1,8 +1,14 @@
 import { nanoid } from 'nanoid';
 import { urlShortner } from '../models/urlModel.js';
 
+export const renderHome = (req, res) => {
+  res.render('home');
+};
+
 export const requestedURL = async (req, res) => {
-  const { url } = req.body;
+  const { requestedURL } = req.body;
+  const url = requestedURL;
+  console.log(url);
 
   if (!url) {
     return res.status('400').send('Unable to create User');
@@ -15,7 +21,10 @@ export const requestedURL = async (req, res) => {
     totalVisits: 0,
   });
 
-  return res.status(200).json(`Url created http://127.0.0.1:8000/api/url/${shortID}`);
+  return res.render('home', {
+    shorten_url: `Url created http://127.0.0.1:8000/api/url/${shortID}`,
+  });
+  // return res.status(200).json(`Url created http://127.0.0.1:8000/api/url/${shortID}`);
 };
 
 export const redirectUrl = async (req, res) => {

@@ -18,6 +18,6 @@ A minimal backend URL shortener built using **Node.js**, **Express.js**,**nanoid
 1. **Clone the repository**:
 
 ```bash
-git clone https://github.com/yourusername/url-shortener.git
+git clone https://github.com/sourish19/url_shortener.git
 cd url-shortener
 ```
