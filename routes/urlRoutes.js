@@ -7,6 +7,6 @@ const router = Router();
 
 router.route('/').get(renderHome).post(isValidURL, requestedURL);
 router.route('/:shortID').get(redirectUrl);
-router.route('/visithistory/:shortid').get(visitHistory);
+router.route('/visithistory/:shortID').get(visitHistory);
 
 export default router;

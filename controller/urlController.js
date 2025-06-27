@@ -14,8 +14,6 @@ export const requestedURL = async (req, res) => {
   try {
     const findUrl = await UrlShortner.findOne({ originalURL: normalizedURL });
 
-    console.log('find url', findUrl);
-
     if (findUrl) {
       return res.status(400).send('URL already registered');
     }
@@ -64,11 +62,16 @@ export const redirectUrl = async (req, res) => {
 };
 
 export const visitHistory = async (req, res) => {
-  const shortID = req.params.shortid;
-  const url = await urlShortner.findOne({ shortID });
-  const visits = url.visitHistory.length;
+  const { shortID } = req.params;
+  console.log(shortID);
 
-  return res
-    .status(200)
-    .json(`Number of visits on http://127.0.0.1:8000/api/url/${shortID} is ${visits}`);
+  if (!shortID) {
+    return res.status(400).json({ err: 'Please provie the short URL' });
+  }
+
+  const url = await UrlShortner.findOne({ shortID });
+
+  const visits = url.visits;
+
+  return res.render('displayURL_visits', { visits, shortID });
 };
