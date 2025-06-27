@@ -10,7 +10,6 @@ const urlSchema = new mongoose.Schema(
     originalURL: {
       type: String,
       required: true,
-      trim: true,
     },
     createdURL: {
       type: String,

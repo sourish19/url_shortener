@@ -6,7 +6,7 @@ import { requestedURL, redirectUrl, visitHistory } from '../controller/urlContro
 const router = Router();
 
 router.route('/').get(renderHome).post(isValidURL, requestedURL);
-router.route('/:shortid').get(redirectUrl);
+router.route('/:shortID').get(redirectUrl);
 router.route('/visithistory/:shortid').get(visitHistory);
 
 export default router;
