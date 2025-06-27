@@ -10,6 +10,15 @@ const urlSchema = new mongoose.Schema(
     originalURL: {
       type: String,
       required: true,
+      trim: true,
+    },
+    createdURL: {
+      type: String,
+      required: true,
+    },
+    visits: {
+      type: Number,
+      default: 0,
     },
     visitHistory: [
       {
@@ -20,4 +29,4 @@ const urlSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const urlShortner = mongoose.model('urlShortner', urlSchema);
+export const UrlShortner = mongoose.model('urlShortner', urlSchema);

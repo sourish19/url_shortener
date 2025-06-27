@@ -1,35 +1,46 @@
 import { nanoid } from 'nanoid';
-import { urlShortner } from '../models/urlModel.js';
-
-export const renderHome = (req, res) => {
-  res.render('home');
-};
+import { UrlShortner } from '../models/urlModel.js';
 
 export const requestedURL = async (req, res) => {
-  const { requestedURL } = req.body;
-  const url = requestedURL;
-  console.log(url);
+  const { url } = req.body;
+  console.log('requested bodu', req.body);
 
-  if (!url) {
-    return res.status('400').send('Unable to create User');
+  console.log('URL', url);
+
+  try {
+    const findUrl = await UrlShortner.findOne({ originalURL: url });
+
+    console.log('find url', findUrl);
+
+    if (findUrl) {
+      return res.status(400).send('URL already registered');
+    }
+
+    const shortID = nanoid(6);
+    const createdURL = `http://127.0.0.1:8000/api/url/${shortID}`;
+
+    const generateUrl = await UrlShortner.create({
+      shortID: shortID,
+      originalURL: url,
+      createdURL,
+    });
+
+    return res.render('displayURL', {
+      shorten_URL: `${createdURL}`,
+    });
+  } catch (error) {
+    console.error(`Error occured:${error}`);
   }
-  const shortID = nanoid(6);
-
-  const generateUrl = await urlShortner.create({
-    shortID: shortID,
-    originalURL: url,
-    totalVisits: 0,
-  });
-
-  return res.render('home', {
-    shorten_url: `Url created http://127.0.0.1:8000/api/url/${shortID}`,
-  });
-  // return res.status(200).json(`Url created http://127.0.0.1:8000/api/url/${shortID}`);
 };
 
 export const redirectUrl = async (req, res) => {
-  const shortID = req.params.shortid;
-  const url = await urlShortner.findOneAndUpdate(
+  const { shortID } = req.params;
+
+  if (!shortID) {
+    return res.status(400).json({ err: 'Please provie the URL' });
+  }
+
+  const url = await UrlShortner.findOneAndUpdate(
     { shortID },
     {
       $push: {
