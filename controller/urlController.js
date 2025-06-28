@@ -63,7 +63,6 @@ export const redirectUrl = async (req, res) => {
 
 export const visitHistory = async (req, res) => {
   const { shortID } = req.params;
-  console.log(shortID);
 
   if (!shortID) {
     return res.status(400).json({ err: 'Please provie the short URL' });
