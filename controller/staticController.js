@@ -1,5 +1,5 @@
 export const renderHome = (req, res) => {
-  res.render('home', { shorten_url: undefined });
+  res.render('home');
 };
 
 export const renderLogin = (req, res) => {

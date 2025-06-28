@@ -8,16 +8,11 @@
   <body>
     <div>
       <h2>URL Shortner</h2>
-      <% if(shorten_url) { %>
-        <p>URL Generated <%= shorten_url%></p>
-       
-      <% } %>
-      <form action="/api/url" method="POST">
+      <form action="/api/url/home" method="POST">
         <label for="url">Enter Your URL</label>
         <input type="text" placeholder="https://example.com" name="url" />
         <button type="submit">Submit</button>
       </form>
-  
     </div>
   </body>
 </html>

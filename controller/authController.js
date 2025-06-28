@@ -17,18 +17,26 @@ const userSignup = async (req, res) => {
 
     res.redirect('/api/url/login');
   } catch (error) {
-    res.status(400).json({ err: 'Something wet wrong' });
+    res.status(400).json({ err: 'Something wet wrong in signup' });
   }
 };
 
 const userLogin = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = User.findOne({ email });
+    const user = await User.findOne({ email, password });
 
-  if (!user) return res.status(400).json({ err: 'User not found' });
+    if (!user) return res.status(400).json({ err: 'User not found' });
 
-  res.cookie('uid', uuidv4(), { expires: new Date(Date.now() + 900000), httpOnly: true });
+    const sessionID = uuidv4();
+
+    req.session.user = { id: sessionID, userId: user._id };
+
+    res.redirect('/api/url/home');
+  } catch (error) {
+    res.status(400).json({ err: 'Something wet wrong in userlogin' });
+  }
 };
 
 export { userSignup, userLogin };
