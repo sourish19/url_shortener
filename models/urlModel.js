@@ -4,7 +4,7 @@ const urlSchema = new mongoose.Schema(
   {
     createdby: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
     },
     shortID: {
       type: String,

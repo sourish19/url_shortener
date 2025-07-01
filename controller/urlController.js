@@ -1,9 +1,12 @@
 import { nanoid } from 'nanoid';
 import normalizeUrl from 'normalize-url';
 import { UrlShortner } from '../models/urlModel.js';
+import mongoose from 'mongoose';
 
 export const requestedURL = async (req, res) => {
   const { url } = req.body;
+  const userId = req.session.user.userId;
+  console.log(userId);
 
   const normalizedURL = normalizeUrl(url, {
     forceHttps: true,
@@ -11,27 +14,39 @@ export const requestedURL = async (req, res) => {
     removeTrailingSlash: false,
   });
 
+  const shortID = nanoid(6);
+  const createdURL = `http://127.0.0.1:8000/api/url/${shortID}`;
+
   try {
-    const findUrl = await UrlShortner.findOne({ originalURL: normalizedURL });
-
-    if (findUrl) {
-      return res.status(400).send('URL already registered');
-    }
-
-    const shortID = nanoid(6);
-    const createdURL = `http://127.0.0.1:8000/api/url/${shortID}`;
-
-    const generateUrl = await UrlShortner.create({
-      shortID: shortID,
-      originalURL: normalizedURL,
-      createdURL,
+    const findUser = await UrlShortner.findOne({
+      createdby: new mongoose.Types.ObjectId(userId),
     });
+
+    console.log('find - ', findUser);
+
+    if (findUser) {
+      const urlExists = findUser.originalURL === normalizedURL ? true : false;
+      if (urlExists) {
+        return res.status(200).json('URL already Exists');
+      }
+      findUser.shortID = shortID;
+      findUser.originalURL = normalizedURL;
+      findUser.createdURL = createdURL;
+      await findUser.save();
+    } else {
+      await UrlShortner.create({
+        createdby: userId,
+        shortID: shortID,
+        originalURL: normalizedURL,
+        createdURL: createdURL,
+      });
+    }
 
     return res.render('displayURL', {
       shorten_URL: `${createdURL}`,
     });
   } catch (error) {
-    res.status(400).jsion({ err: `Error occured - ${error}` });
+    res.status(400).json({ err: `Error occured - ${error}` });
   }
 };
 

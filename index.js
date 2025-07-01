@@ -12,10 +12,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: `${process.env.EXPRESS_SECRET}`, // Use a strong, unique secret
-    resave: false, // Don't save unchanged sessions
-    saveUninitialized: false, // Don't store empty sessions
-    cookie: { maxAge: 900 * 1000 }, // Session lasts 1 minute
+    secret: `${process.env.EXPRESS_SECRET}`,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 900 * 1000 },
   })
 );
 
